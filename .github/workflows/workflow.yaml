@@ -1,37 +1,17 @@
-name: Build AdGuard DNS filter
+name: Sync Fork
 
 on:
-  push:
   schedule:
-    - cron: '0 */6 * * *' # Every 6th hour
+    - cron: '*/5 * * * *' # every 30 minutes
+  workflow_dispatch: # on button click
 
 jobs:
-  build:
-
+  sync:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v1
+      - uses: tgymnich/fork-sync@v1.8
         with:
-          node-version: 14.x
-
-      - name: yarn
-        run: |
-          yarn install
-          yarn run build
-
-      - name: prepare deploy
-        run: |
-          mkdir build
-          cp -rf Filters build/
-        env:
-          CI: true
-
-      - name: deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/master'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          owner: AdguardTeam
+          base: gh-pages
+          head: gh-pages
