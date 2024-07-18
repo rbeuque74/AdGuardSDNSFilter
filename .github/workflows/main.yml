@@ -16,3 +16,4 @@ jobs:
           owner: AdguardTeam
           base: gh-pages
           head: gh-pages
+          ignore_fail: true
