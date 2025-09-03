@@ -3,7 +3,7 @@
 ! Description: Filter includes rules for sites that open in a new window, composed from AdGuard, EasyList, ABPindo filters and improved for compatibility with DNS-level pop-up blocking.
 ! Homepage: https://github.com/AdguardTeam/AdguardSDNSFilter
 ! License: https://github.com/AdguardTeam/AdguardSDNSFilter/blob/master/LICENSE
-! Last modified: 2025-09-03T12:10:56.155Z
+! Last modified: 2025-09-03T18:08:02.875Z
 !
 ! Compiled by @adguard/hostlist-compiler v1.0.38
 !
@@ -229,6 +229,7 @@
 ||alpenridge.top^$dnsrewrite=ad-block.dns.adguard.com
 ||alpine-vpn.com^$dnsrewrite=ad-block.dns.adguard.com
 ||aneorwd.com^$dnsrewrite=ad-block.dns.adguard.com
+||animeloundry.com^$dnsrewrite=ad-block.dns.adguard.com
 ||antcixn.com^$dnsrewrite=ad-block.dns.adguard.com
 ||antiadblocksystems.com^$dnsrewrite=ad-block.dns.adguard.com
 ||antjgr.com^$dnsrewrite=ad-block.dns.adguard.com
@@ -1219,7 +1220,6 @@
 ||origoclick.com^$dnsrewrite=ad-block.dns.adguard.com
 ||passion.com^$dnsrewrite=ad-block.dns.adguard.com
 ||performanceonclick.com^$dnsrewrite=ad-block.dns.adguard.com
-||playhydrax.com^$dnsrewrite=ad-block.dns.adguard.com
 ||porn-upload.com^$dnsrewrite=ad-block.dns.adguard.com
 ||pornz.fr^$dnsrewrite=ad-block.dns.adguard.com
 ||potwm.com^$dnsrewrite=ad-block.dns.adguard.com
