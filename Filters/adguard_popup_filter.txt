@@ -3,7 +3,7 @@
 ! Description: Filter includes rules for sites that open in a new window, composed from AdGuard, EasyList, ABPindo filters and improved for compatibility with DNS-level pop-up blocking.
 ! Homepage: https://github.com/AdguardTeam/AdguardSDNSFilter
 ! License: https://github.com/AdguardTeam/AdguardSDNSFilter/blob/master/LICENSE
-! Last modified: 2025-11-27T12:11:20.912Z
+! Last modified: 2025-11-27T18:09:23.525Z
 !
 ! Compiled by @adguard/hostlist-compiler v1.0.38
 !
@@ -545,6 +545,7 @@
 ||mobile-ads.wycc.porn^$dnsrewrite=ad-block.dns.adguard.com
 ||mobiletracking.ru^$dnsrewrite=ad-block.dns.adguard.com
 ||momotrk.com^$dnsrewrite=ad-block.dns.adguard.com
+||mosved.com^$dnsrewrite=ad-block.dns.adguard.com
 ||movie-tv-free.com^$dnsrewrite=ad-block.dns.adguard.com
 ||mylot.com^$dnsrewrite=ad-block.dns.adguard.com
 ||mynutraresearch.com^$dnsrewrite=ad-block.dns.adguard.com
