@@ -25,22 +25,63 @@ jobs:
       - name: Add upstream remote
         run: |
           REPO_NAME=${GITHUB_REPOSITORY#*/}
+          # ensure a clean upstream remote
           git remote add upstream https://github.com/AdguardTeam/${REPO_NAME}
-          git fetch upstream --depth=1
+          # do not assume shallow fetch; fetch minimally first and deepen if needed
+          git fetch upstream gh-pages --depth=5 || true
 
       - name: Sync gh-pages from upstream
         run: |
-          git fetch origin
+          set -o pipefail
+
+          # ensure origin refs are available
+          git fetch origin gh-pages || true
+
+          # try to find a common ancestor between origin and upstream
+          MERGE_BASE=$(git merge-base --all refs/remotes/origin/gh-pages refs/remotes/upstream/gh-pages 2>/dev/null || true)
+
+          if [ -z "$MERGE_BASE" ]; then
+            echo "No common ancestor found with shallow fetch; progressively fetching deeper history from upstream..."
+            for d in 10 30 50 100 200 500 1000 2000; do
+              echo "Fetching upstream depth=$d"
+              git fetch upstream gh-pages --depth=$d || true
+              MERGE_BASE=$(git merge-base --all refs/remotes/origin/gh-pages refs/remotes/upstream/gh-pages 2>/dev/null || true)
+              if [ -n "$MERGE_BASE" ]; then
+                break
+              fi
+            done
+          fi
+
+          if [ -z "$MERGE_BASE" ]; then
+            echo "Still no common ancestor; fetching full upstream history"
+            git fetch upstream gh-pages || true
+            MERGE_BASE=$(git merge-base --all refs/remotes/origin/gh-pages refs/remotes/upstream/gh-pages 2>/dev/null || true)
+          fi
+
+          if [ -n "$MERGE_BASE" ]; then
+            echo "Found common ancestor: $MERGE_BASE"
+          else
+            echo "No common ancestor could be found after fetching history"
+          fi
+
+          # prepare local gh-pages branch
           if git show-ref --verify --quiet refs/heads/gh-pages; then
             git checkout gh-pages
           else
             git checkout -b gh-pages
           fi
-          git fetch upstream gh-pages
-          if git merge upstream/gh-pages; then
-            echo "Merge commited"
+
+          # if there is a common ancestor, prefer fast-forward merge; otherwise reset to upstream
+          if [ -n "$MERGE_BASE" ]; then
+            if git merge upstream/gh-pages; then
+              echo "Merged"
+            else
+              echo "Cannot merge, due to conflict ?"
+              exit 1
+            fi
           else
-            echo "Conflict"
-            exit 1
+            echo "No common ancestor"
+            exit 2
           fi
+
           git push origin gh-pages
