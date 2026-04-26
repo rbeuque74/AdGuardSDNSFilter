@@ -7,40 +7,14 @@ on:
 
 jobs:
   sync:
+
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Fork Sync
+        uses: tgymnich/fork-sync@v2.0.10
         with:
-          fetch-depth: 0
-
-      - name: Configure Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Add upstream remote
-        run: |
-          REPO_NAME=${GITHUB_REPOSITORY#*/}
-          git remote add upstream https://github.com/AdguardTeam/${REPO_NAME}
-          git fetch upstream --depth=1
-
-      - name: Sync gh-pages from upstream
-        run: |
-          git fetch origin
-          if git show-ref --verify --quiet refs/heads/gh-pages; then
-            git checkout gh-pages
-          else
-            git checkout -b gh-pages
-          fi
-          git fetch upstream gh-pages
-          if git merge upstream/gh-pages; then
-            echo "Merge commited"
-          else
-            echo "Conflict"
-            exit 1
-          fi
-          git push origin gh-pages
+          owner: AdguardTeam
+          base: gh-pages
+          head: gh-pages
+          ignore_fail: true
